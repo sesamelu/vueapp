@@ -1,0 +1,19 @@
+module.exports={
+    local:{
+        open:true,
+        port:3000
+    },
+    http:{
+        open:false,
+        port:3000
+    },
+    http:{
+        open:false,
+        port:80
+    },
+    https:{
+        open:false,
+        port:443
+    },
+}
+//根据将来上线后的域名进行相应的设置
