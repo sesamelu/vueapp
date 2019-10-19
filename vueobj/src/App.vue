@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <Loading v-show='this.$store.state.bLoading'></Loading>
-    <Header v-show='this.$store.state.bHeader'></Header>
+    <Loading v-show='$store.state.bLoading'></Loading>
+    <Header v-show='$store.state.bHeader'></Header>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <Footer v-show='this.$store.state.bFooter'></Footer> 
+    <Footer v-show='$store.state.bFooter'></Footer> 
     
   </div>
 </template>
@@ -15,7 +15,7 @@
 import Header from './components/header';
 import Footer from './components/footer';
 import Loading from './components/loading';
-import {VIEW_HEADER,VIEW_FOOTER} from './store/types'
+import {VIEW_HEADER,VIEW_FOOTER} from './store/types.js'
 //全局过滤器的配置
 import './filters'
 

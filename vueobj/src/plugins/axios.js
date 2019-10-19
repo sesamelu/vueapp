@@ -7,14 +7,14 @@ axios.defaults.withCredentials=true
 
 axios.interceptors.request.use(function (config) {
     //添加公共请求头  token key:value
-    store.state.bLoading=true
+    store.dispatch('VIEW_LOADING',true)
     return config;
   }, function (error) {
     return Promise.reject(error);
   });
 
 axios.interceptors.response.use(function (response) {
-    store.state.bLoading=false
+  store.dispatch('VIEW_LOADING',false)
     return response;
   }, function (error) {
     return Promise.reject(error);

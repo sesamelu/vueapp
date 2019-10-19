@@ -47,7 +47,7 @@ export default {
       formData.append('nikename',this.nikename)
       formData.append('icon',inputfile.files[0])
       axios({
-        url:'http://localhost:3000/api/reg',
+        url:'/api/reg',
         method:'post',
         data:formData
       }).then(
@@ -68,14 +68,13 @@ export default {
 
 <style scoped>
   .header{height:.88rem;}
-  header{height:.88rem;background:#eeeff3;position: fixed;left:0;right:0;margin:auto;display: flex;justify-content:space-around; align-items:center;}
-  header a{font-size:0.66rem;flex:1;margin-left:.5rem;}
-  header span{font-size:0.32rem;flex:1}
+  header{height:.88rem;background:#eeeff3;position: fixed;left:0;right:0;margin:auto;display: flex;justify-content:center; align-items:center;}
+  header a{font-size:0.66rem;position:absolute;left:0.2rem;}
+  header span{font-size:0.32rem;}
   /*主体*/
   #register form{padding:.4rem .40rem;}
-  #register form input{border:0;background:none;width:6rem;border-radius:.1rem;height:.77rem;border:.01rem solid #b2b2b2;font:.24rem/.64rem "";color:#aaa;margin-top:.23rem;}
+  #register form input{background:none;width:6rem;border-radius:.1rem;height:.77rem;border:.01rem solid #b2b2b2;font:.24rem/.64rem "";color:#aaa;margin-top:.23rem;}
   #register form label{display: block;font:.26rem/.6rem "";}
   #register form #file{border:none;}
   #register form .reg-reg{background:#333;}
-  #register form .reg-login{}
 </style>

@@ -28,10 +28,6 @@ export default {
     props:['listData','dataName'],
     methods:mapActions(['ADD_ITEM'])
 
-
-
-
-
     // data:function(){
     //     return{
     //         pic:'this.listData[0].detail.detailbanner[0].pic'
@@ -47,7 +43,7 @@ export default {
 <style scoped>
   .home__list{}
   .home__list ul{}
-  .home__list ul li{display: flex;justify-content:space-around;}
+  .home__list ul li{display: flex;justify-content:space-around;align-items: center}
   .home__list ul li a{flex:1;display: flex;}
   .home__list ul li a img{width:2rem;height:2rem;margin:.16rem .24rem 0;}
   .home__list ul li a .canshu{height:1.31rem;padding-right:.24rem;}

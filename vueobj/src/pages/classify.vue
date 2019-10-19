@@ -7,7 +7,6 @@
 
 <script>
 import List from '../components/list'
-import {UPDATE_CLASSIFY} from '../store/types'
 export default {
   data(){
     return {
@@ -18,7 +17,7 @@ export default {
     List
   },
   activated(){
-    this.$store.dispatch(UPDATE_CLASSIFY)
+    this.$store.dispatch('UPDATE_CLASSIFY')
     // this.$axios({
     //   url:'http://localhost:3000/api/classify',
     //   params:{_page:1,_limit:4}

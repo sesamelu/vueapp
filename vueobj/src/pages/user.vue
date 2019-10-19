@@ -55,7 +55,6 @@
 <script>
 import store from '../plugins/store'
 export default {
-
     beforeRouteEnter(to,from,next){//这里拿不到this
         //直接去store里拿数据进行判断，这里的数据登录的时候会被修改
         store.state.user.err==0?next():next('/login')
@@ -73,7 +72,7 @@ export default {
     methods:{
         logout(){
             axios({
-                url:'http://localhost:3000/api/logout',
+                url:'/api/logout',
                 method:'delete'
             }).then(
                 //组件可以直接修改mutations的数据，不需要经过actions，直接将mutations的数据改为{}传给state
@@ -82,7 +81,7 @@ export default {
                         let id=this.$store.state.user.data._id
                         let goods=this.$store.state.user.data.goods
                         axios({
-                            url:'http://localhost:3000/api/usershopcar',
+                            url:'/api/usershopcar',
                             method:'post',
                             data:{
                                 id:id,
@@ -93,7 +92,6 @@ export default {
                                 console.log(res.data)
                             }
                         )
-
                         this.$router.push('/home')
                         this.$store.commit('CHECK_USER',{
                             err:1,
@@ -103,15 +101,12 @@ export default {
                             }                          
                         })
                         window.localStorage.removeItem('user')
-                        
-
                 }//注销时发送请求，把用户信息和goods数据带过去，让node更新数据库中的user数据
 
              }
             )
         }
     }
-
 }
 
 </script>
@@ -129,15 +124,15 @@ header{height:.88rem;background:#eeeff3;position: fixed;left:0;right:0;margin:au
 /*主体*/
 #denglu{height:1.49rem;display: flex;justify-content: space-between;align-items:center;padding:0 .28rem 0 .24rem;background: #fff;}
 #denglu .denglu_l{}
-#denglu .denglu_l img{width:1rem;height:1rem;}
-#denglu .denglu_l a{font:.3rem/1.49rem "黑体";}
-#denglu .denglu_r a{display:block;font:.24rem/.36rem "";color:#999;padding:0 .15rem 0 .43rem;background:#e5e5e5  no-repeat .04rem .03rem;border-radius: .16rem;background-size:.28rem .28rem;}
+#denglu .denglu_l img{width:1rem;height:1rem;border-radius: 50%}
+#denglu .denglu_l a{font:.3rem/1.49rem "黑体";padding-left:.2rem}
+#denglu .denglu_r a{display:block;font:.24rem/.36rem "";color:#999;padding:0 .2rem 0 .2rem;background:#e5e5e5  no-repeat .04rem .03rem;border-radius: .16rem;background-size:.28rem .28rem;}
 
 
 #yingshi{display: flex;justify-content: space-between;align-items: center;margin:.41rem 0;background: #fff;height:1.4rem;}
 #yingshi .yingshi_l{flex:1;padding-left:.28rem;display: flex;align-items: center;border-right:.02rem solid #ebebeb;}
 #yingshi .yingshi_l .ys_box{flex:1;padding-left:.2rem;}
-#yingshi .yingshi_l .ys_box p{font:.28rem/.42rem "黑体";}
+#yingshi .yingshi_l .ys_box p{font:.28rem/.42rem "黑体";padding-left:.4rem}
 #yingshi .yingshi_l .ys_box a{font:.24rem/.4rem "";color:#9a9a9a;}
 #yingshi .yingshi_r{flex:1;display: flex;height:.7rem;}
 #yingshi .yingshi_r img{display: block;width:.36rem;height:.36rem;display: block;margin:.17rem 0 0 .29rem;}

@@ -1,5 +1,4 @@
 import * as types from './types'
-import axios from 'axios'
 export default{
     [types.VIEW_LOADING]:({state,commit},payload)=>{
         commit(types.VIEW_LOADING,payload)
@@ -12,18 +11,15 @@ export default{
     },
     [types.UPDATE_HOME]:({state,commit},payload)=>{
         axios({
-            url:'http://localhost:3000/api/home',
-            params:{
-                _page:1,
-                _limit:8
-            }
+            url:'/api/home',
+            params:{_page:1,_limit:8}
         }).then(
             res=>commit(types.UPDATE_HOME,res.data.data)
         )
     },
     [types.UPDATE_CLASSIFY]:({state,commit},payload)=>{
         axios({
-            url:'http://localhost:3000/api/classify',
+            url:'/api/classify',
             params:{_page:1,_limit:10}
         }).then(
             res=>commit(types.UPDATE_CLASSIFY,res.data.data)
@@ -31,25 +27,28 @@ export default{
     },
     [types.UPDATE_BANNER]:({state,commit},payload)=>{
         axios({
-            url:'http://localhost:3000/api/banner',
+            url:'/api/banner',
+            params:{_page:1,_limit:2}
         }).then(
             res=>commit(types.UPDATE_BANNER,res.data.data)
         )
     },
     [types.UPDATE_DETAIL]:({state,commit},{dataName,id})=>{
         axios({
-            url:`http://localhost:3000/api/${dataName}/${id}`
+            url:`/api/${dataName}/${id}`
         }).then(
             res=>{
-                commit(types.UPDATE_DETAIL,{})
+                // commit(types.UPDATE_DETAIL,{})
                 commit(types.UPDATE_DETAIL,res.data.data)
-            }
-            
+            } 
         )
+    },
+    [types.DEL_DETAIL]:({state,commit},payload)=>{
+        commit(types.DEL_DETAIL,{})
     },
     [types.CHECK_USER]:({state,commit},{username,password,save})=>{
        return axios({
-        url:'http://localhost:3000/api/login',
+        url:'/api/login',
         data:{
           username,
           password,
@@ -111,23 +110,22 @@ export default{
         commit('REMOVE_ITEM',[...state.user.data.goods])
     },
     [types.CHECK_ITEM]:({state,commit},payload)=>{
-    //     console.log(payload.target.checked)
-    //     let arr=[...state.goods]
-    //     let check=payload.target.checked
-    //     state.goods.forEach((item,index)=>{
-    //         if(item._id==payload._id){
-    //             item.check=check
-    //         }
-    //     })
-    //     // arr.push({"sum":sum})
-    //     commit('CHECK_ITEM',arr)
+        // 把目前的选中状态传过来，如果传过来的是true，点击时应该取反变为false，然后把goods中所有数据的状态改为false
+        let arr=[...state.user.data.goods]
+        arr.forEach((item,index)=>{
+            if(payload==true){
+                item.check=false
+            }else{
+                item.check=true
+            }
+        })
+        // arr.push({"sum":sum})
+        commit('CHECK_ITEM',arr)
+        // console.log(arr)
     },
     [types.CLEAR_BUYCAR]:({state,commit})=>{
         commit('CLEAR_BUYCAR',[])
     },
     
-
-
-
 
 }

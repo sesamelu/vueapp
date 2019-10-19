@@ -13,3 +13,5 @@ export const REMOVE_ITEM='REMOVE_ITEM';
 export const CHANGE_ITEM='CHANGE_ITEM';
 export const CHECK_ITEM='CHECK_ITEM';
 export const CLEAR_BUYCAR='CLEAR_BUYCAR';
+
+export const DEL_DETAIL='DEL_DETAIL';

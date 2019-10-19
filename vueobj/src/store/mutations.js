@@ -15,6 +15,8 @@ export default{
     [types.CHANGE_ITEM]:(state,payload)=>state.user.data.goods=payload,
     [types.CHECK_ITEM]:(state,payload)=>state.user.data.goods=payload,
     [types.CLEAR_BUYCAR]:(state,payload)=>state.user.data.goods=payload,
+
+    [types.DEL_DETAIL]:(state,payload)=>state.detail=payload,
     
     
 }

@@ -44,10 +44,9 @@
                 </ul>
             </div>
             <div class="buybox">
-                <input type="button" value="加入购物车" @click="ADD_ITEM($store.state.detail)" />
-                <input type="button" value="立即购买"/>
+                <input type="button" class="addcar" value="加入购物车" @click="add($store.state.detail)" />
+                <input type="button" class="imbuy" value="立即购买"/>
             </div>
-            
         </footer>
     </div>
 </template>
@@ -57,10 +56,6 @@ import Swipe from '../assets/js/swipe.js';
 import { mapActions } from "vuex";
 import store from '../plugins/store'
 export default {
-    data:function(){
-        return { 
-        }
-    },
     activated(){
         let id=this.$route.params.id;
         let dataName=this.$route.query.dataName;
@@ -74,6 +69,9 @@ export default {
         // //console.log(this.detaildata.detail.detailbanner[0].pic)
         // }) 
     },
+    deactivated(){
+        this.$store.dispatch('DEL_DETAIL',{})
+    },
     updated(){
         new Swipe($('.banner')[0],{
         auto:2000,
@@ -85,14 +83,22 @@ export default {
         }
         })
     },
-    methods:mapActions(['ADD_ITEM'])
+    methods:{
+        add(addpro){
+            if(store.state.user.err==1){
+                this.$router.push('/login')
+            }else{
+                this.$store.dispatch('ADD_ITEM',addpro)
+            }
+        },  
+    }
 }
 </script>
 <style scoped>
     .header{height:.88rem;}
-    header{height:.88rem;background:#eeeff3;position: fixed;left:0;right:0;margin:auto;display: flex;justify-content:space-around; align-items:center;}
-    header a{font-size:0.66rem;flex:1;margin-left:.5rem;}
-    header span{font-size:0.32rem;flex:1}
+    header{height:.88rem;background:#eeeff3;position: fixed;left:0;right:0;margin:auto;display: flex;justify-content:center; align-items:center;}
+    header a{position: absolute;left:0.2rem;font-size:0.66rem;}
+    header span{font-size:0.32rem;}
 
     .banner{position: relative;overflow: hidden; z-index: 1}
     .banner ul li{width:7.5rem;float:left;position: relative;}
@@ -109,7 +115,7 @@ export default {
     .detail-content .fright{display: flex;justify-content: space-around;font:.26rem/.6rem "";}
 
     /*底部*/
-    footer{height:.97rem;border-top:.01rem solid #bfbfbf;position: fixed;left:0;right:0;bottom:0;background:#fff;display: flex;justify-content: space-around;}
+    footer{height:.97rem;border-top:.01rem solid #bfbfbf;position: fixed;left:0;right:0;bottom:0;background:#fff;display: flex;justify-content: space-between;}
     footer ul{display: flex;justify-content: space-around;}
     footer ul li{margin-top:.14rem;}
     footer ul li a{display: block;}
@@ -123,6 +129,11 @@ export default {
     footer ul li a.active i.i3{background-position: -.5rem -1.5rem;}
     footer ul li a span{display: block;font:.2rem/.32rem "";color:#808080;text-align: center;}
     footer ul li a.active span{color:#000;}
-    footer .buybox input{border:0;background:none;width:2rem;height:.6rem;border:.01rem solid #b2b2b2;font:.24rem/.6rem "";color:#aaa;margin-top:.23rem};
+    footer .kefubox{flex:2;}
+    footer .kefubox ul{display: flex;justify-content: space-around;}
+    footer .buybox{flex:3;display: flex;justify-content: space-around;align-items: center;}
+    footer .buybox input{border:0;width:2rem;height:.7rem;font:.26rem/.6rem "";color:#fff;margin-top:.1rem;}
+    footer .buybox input.addcar{background:#f77;}
+    footer .buybox input.imbuy{background:#f00;}
     .footer{height:.98rem;}
 </style>
