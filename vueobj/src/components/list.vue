@@ -15,15 +15,23 @@
                 </router-link>
             
                 <div class='car_icon'>
-                    <a href="#"><img src="/img/footer03b.png"></a>
+                    <a href="javascript:;" @click="ADD_ITEM(item)"><img src="/img/footer03b.png"/></a>
                 </div>
             </li>
         </ul>
     </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+import store from '../plugins/store'
 export default {
     props:['listData','dataName'],
+    methods:mapActions(['ADD_ITEM'])
+
+
+
+
+
     // data:function(){
     //     return{
     //         pic:'this.listData[0].detail.detailbanner[0].pic'

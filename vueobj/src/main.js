@@ -15,12 +15,22 @@ import './plugins/axios'
 //配置基础路径
 Vue.prototype.server = require('../config/server')
 
-export default new Vue({
+//引入状态管理
+import store from './plugins/store'
+
+//强刷页面时，将localstorage的数据存到store中
+let local = window.localStorage.getItem('user')
+let localjson=(JSON.parse(local))
+if(local){
+  store.commit('CHECK_USER',localjson)
+  // console.log(localjson.user)
+}
+
+
+new Vue({
   data:{
-    bNav:true,
-    bFooter:true,
-    bLoading:false
   },
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

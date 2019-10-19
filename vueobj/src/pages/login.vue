@@ -39,26 +39,34 @@ export default {
   },
   methods:{
     login(){
-      axios({
-        url:'http://localhost:3000/api/login',
-        data:{
-          username:this.username,
-          password:this.password,
-          save:this.save
-        },
-        method:'post',
-        withCredentials:true
+      this.$store.dispatch('CHECK_USER',{
+        username:this.username,
+        password:this.password,
+        save:this.save
       }).then(
-        res=>{
-          if(res.data.err==1){
-            // console.log(res.data)
-            this.mess=res.data.msg
-          }else{
-            this.mess=res.data.msg
-            this.$router.push('/user')
-          }
+        data=>{//拿到actions返回的数据，根据返回的数据进行操作
+          data.err==0?this.$router.push('/user'):this.mess=data.msg
         }
       )
+      // axios({
+      //   url:'http://localhost:3000/api/login',
+      //   data:{
+      //     username:this.username,
+      //     password:this.password,
+      //     save:this.save
+      //   },
+      //   method:'post',
+      // }).then(
+      //   res=>{
+      //     if(res.data.err==1){
+      //       // console.log(res.data)
+      //       this.mess=res.data.msg
+      //     }else{
+      //       this.mess=res.data.msg
+      //       this.$router.push('/user')
+      //     }
+      //   }
+      // )
     }
   }
 }

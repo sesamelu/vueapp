@@ -9,20 +9,20 @@
     <div class="header"></div>
 
     <!--登录-->
-    <div id="denglu">
+    <div id="denglu" v-if='$store.state.user.err==0'>
 			<div class="denglu_l">
-				<img :src="server.baseUrl+userdata.icon"/>
-				<a href="#">欢迎，<span>{{userdata.nikename}}</span></a>
+				<img :src="server.baseUrl+$store.state.user.data.icon"/>
+				<a href="#">欢迎，<span>{{$store.state.user.data.nikename}}</span></a>
 			</div>
 			<div class="denglu_r">
-				<a href="javascript" @click="logout">注销</a>
+				<a href="javascript:;" @click="logout">注销</a>
 			</div>
     </div>
     
-    <div id="yingshi">
+    <div id="yingshi" v-if='$store.state.user.err==0'>
 			<div class="yingshi_l">
 				<div class="ys_box">
-					<p>{{userdata.credit}}</p>
+					<p>{{$store.state.user.data.credit}}</p>
 					<a href="#">我的积分</a>
 				</div>
 				
@@ -53,21 +53,22 @@
 </template>
 
 <script>
+import store from '../plugins/store'
 export default {
-    data(){
-        return {
-            userdata:{}
-        }
-    },
+
     beforeRouteEnter(to,from,next){//这里拿不到this
-        axios({
-            url:'http://localhost:3000/api/user',
-        }).then(
-            res=>{
-                // console.log(res.data)
-                res.data.err==0?next(_this=>_this.userdata=res.data.data):next('/login')
-            }
-        )
+        //直接去store里拿数据进行判断，这里的数据登录的时候会被修改
+        store.state.user.err==0?next():next('/login')
+        // console.log(store.state.err)
+        // console.log(store.state.user)
+        // axios({
+        //     url:'http://localhost:3000/api/user',
+        // }).then(
+        //     res=>{
+        //         // console.log(res.data)
+        //         res.data.err==0?next(_this=>_this.userdata=res.data.data):next('/login')
+        //     }
+        // )
     },
     methods:{
         logout(){
@@ -75,10 +76,37 @@ export default {
                 url:'http://localhost:3000/api/logout',
                 method:'delete'
             }).then(
+                //组件可以直接修改mutations的数据，不需要经过actions，直接将mutations的数据改为{}传给state
                 res=>{
                     if(res.data.err==0){
-                    this.$router.push('/login')
-                }
+                        let id=this.$store.state.user.data._id
+                        let goods=this.$store.state.user.data.goods
+                        axios({
+                            url:'http://localhost:3000/api/usershopcar',
+                            method:'post',
+                            data:{
+                                id:id,
+                                goods:goods
+                            }
+                        }).then(
+                            res=>{
+                                console.log(res.data)
+                            }
+                        )
+
+                        this.$router.push('/home')
+                        this.$store.commit('CHECK_USER',{
+                            err:1,
+                            msg:'未登录',  
+                            data:{
+                                good:[]
+                            }                          
+                        })
+                        window.localStorage.removeItem('user')
+                        
+
+                }//注销时发送请求，把用户信息和goods数据带过去，让node更新数据库中的user数据
+
              }
             )
         }

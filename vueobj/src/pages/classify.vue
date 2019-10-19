@@ -1,12 +1,13 @@
 <template>
   <div class='classify'>
-    <List :list-data='classifydata' :data-name="'classify'"></List>
+    <List :list-data='$store.state.classify' :data-name="'classify'"></List>
   </div>
 </template>
 
 
 <script>
 import List from '../components/list'
+import {UPDATE_CLASSIFY} from '../store/types'
 export default {
   data(){
     return {
@@ -17,15 +18,16 @@ export default {
     List
   },
   activated(){
-    this.$axios({
-      url:'http://localhost:3000/api/classify',
-      params:{_page:1,_limit:4}
-    }).then(
-       res=>{
-        this.classifydata=res.data.data;
-        // console.log(res.data.data)
-        }
-    )
+    this.$store.dispatch(UPDATE_CLASSIFY)
+    // this.$axios({
+    //   url:'http://localhost:3000/api/classify',
+    //   params:{_page:1,_limit:4}
+    // }).then(
+    //    res=>{
+    //     this.classifydata=res.data.data;
+    //     // console.log(res.data.data)
+    //     }
+    // )
   }
 }
 </script>

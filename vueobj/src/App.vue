@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <Loading v-show="$root.$data.bLoading"></Loading>
-    <Header v-show="$root.$data.bNav"></Header>
+    <Loading v-show='this.$store.state.bLoading'></Loading>
+    <Header v-show='this.$store.state.bHeader'></Header>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <Footer v-show="$root.$data.bFooter"></Footer> 
+    <Footer v-show='this.$store.state.bFooter'></Footer> 
     
   </div>
 </template>
@@ -15,7 +15,7 @@
 import Header from './components/header';
 import Footer from './components/footer';
 import Loading from './components/loading';
-
+import {VIEW_HEADER,VIEW_FOOTER} from './store/types'
 //全局过滤器的配置
 import './filters'
 
@@ -25,19 +25,23 @@ export default {
       
     }
   },
+  mounted(){
+  // console.log('store',this.$store)
+  },
   methods:{
     checkPath(path){
+      //路由变化时才发送请求，不能用mapActions,mapActions会立即执行
       if(/home|classify|shopcar|\//.test(path)){
-        this.$root.$data.bNav=true;
-        this.$root.$data.bFooter=true;
+        this.$store.dispatch(VIEW_HEADER,true)
+        this.$store.dispatch(VIEW_FOOTER,true)
       }
       if(/user/.test(path)){
-        this.$root.$data.bNav=false;
-        this.$root.$data.bFooter=true;
+        this.$store.dispatch(VIEW_HEADER,false)
+        this.$store.dispatch(VIEW_FOOTER,true)
       }
       if(/detail|reg|login/.test(path)){
-        this.$root.$data.bNav=false;
-        this.$root.$data.bFooter=false;
+        this.$store.dispatch(VIEW_HEADER,false)
+        this.$store.dispatch(VIEW_FOOTER,false)
       }
     }
   },

@@ -6,88 +6,86 @@
     </header>
     <div class="header"></div>
 
-    <div class="banner" v-if="detaildata.detail">
-    <ul>
-      <li>
-         <img :src="server.baseUrl+detaildata.detail.detailbanner[0].pic" alt=""/>
-          <div class="text-box">
-            <h2>这里是运动</h2>
-          </div>
-      </li>
+    <div class="banner" v-if="$store.state.detail.detail">
+        <ul>
+            <li v-for="(item,index) of $store.state.detail.detail.detailbanner"
+                :key=index
+            >
+                <img :src="server.baseUrl+item.pic" alt=""/>
+            </li>
 
-      <li>
-          <img :src="server.baseUrl+detaildata.detail.detailbanner[0].pic" alt=""/>
-          <div class="text-box">
-            <h2>这里是运动</h2>
-          </div>
-      </li>
-    </ul>
+        <!-- <li>
+            <img :src="server.baseUrl+$store.state.detail.detail.detailbanner[0].pic" alt=""/>
+            <div class="text-box">
+                <h2>这里是运动</h2>
+            </div>
+        </li> -->
+        </ul>
     </div>
-    <div class="detail-content" v-if="detaildata.detail">
-        <p class="title">{{detaildata.title}}</p>
-        <p class="price">{{detaildata.price|fillzero}}</p>
-        <div class="fright"><span>运费:<i>{{detaildata.detail.freight|fillzero}}</i></span><span>剩余:<i>2000</i></span><span>销量:<i>{{detaildata.sales|data}}</i></span></div>
+    <div class="detail-content" v-if="$store.state.detail.detail">
+        <p class="title">{{$store.state.detail.title}}</p>
+        <p class="price">{{$store.state.detail.price|fillzero}}</p>
+        <div class="fright"><span>运费:<i>{{$store.state.detail.freight|fillzero}}</i></span><span>剩余:<i>2000</i></span><span>销量:<i>{{$store.state.detail.sales|data}}</i></span></div>
     </div>
 
     <div class="footer"></div>
-    <footer>
-        <div class="kefubox">
-            <ul>
-                <li>
-                    <a href="#"><i class="i2"></i><span>客服</span></a>
-                </li>
-                <router-link to="/shopcar" tag="li">
-                    <a href="#"><i class="i3"></i><span>购物车</span></a>
-                </router-link>
-                <router-link to="/home" tag="li">
-                    <a href="#"><i class="i4"></i><span>店铺</span></a>
-                </router-link>
-            </ul>
-        </div>
-        <div class="buybox">
-            <input type="button" value="加入购物车"/>
-            <input type="button" value="立即购买"/>
-        </div>
-        
-    </footer>
-  </div>
+        <footer>
+            <div class="kefubox">
+                <ul>
+                    <li>
+                        <a href="#"><i class="i2"></i><span>客服</span></a>
+                    </li>
+                    <router-link to="/shopcar" tag="li">
+                        <a href="#"><i class="i3"></i><span>购物车</span></a>
+                    </router-link>
+                    <router-link to="/home" tag="li">
+                        <a href="#"><i class="i4"></i><span>店铺</span></a>
+                    </router-link>
+                </ul>
+            </div>
+            <div class="buybox">
+                <input type="button" value="加入购物车" @click="ADD_ITEM($store.state.detail)" />
+                <input type="button" value="立即购买"/>
+            </div>
+            
+        </footer>
+    </div>
 </template>
 <script>
 import $ from 'jquery'
 import Swipe from '../assets/js/swipe.js';
-
+import { mapActions } from "vuex";
+import store from '../plugins/store'
 export default {
     data:function(){
-        return {
-            detaildata:{}
+        return { 
         }
-        
     },
     activated(){
-        
         let id=this.$route.params.id;
-        let dataname=this.$route.query.dataName;
-        this.$axios({
-        url:'http://localhost:3000/api/'+dataname+'/'+id//后端设置了可以直接/id访问
-        }).then(
-        res=>{this.detaildata=res.data.data
-        // console.log(res.data.data)
-        //console.log(this.detaildata.detail.detailbanner[0].pic)
-        })
+        let dataName=this.$route.query.dataName;
+        this.$store.dispatch('UPDATE_DETAIL',{dataName,id})
 
-        
+        // this.$axios({
+        // url:'http://localhost:3000/api/'+dataname+'/'+id//后端设置了可以直接/id访问
+        // }).then(
+        // res=>{this.detaildata=res.data.data
+        // // console.log(res.data.data)
+        // //console.log(this.detaildata.detail.detailbanner[0].pic)
+        // }) 
     },
     updated(){
-    new Swipe($('.banner')[0],{
-      auto:2000,
-      continuous:true,
-      stopPropation:true,
-      callback:function (index,element){
-        $('.banner ol li').removeClass('active');
-        $('.banner ol li').eq(index).addClass('active');
-      }
-    })
-    }
+        new Swipe($('.banner')[0],{
+        auto:2000,
+        continuous:true,
+        stopPropation:true,
+        callback:function (index,element){
+            $('.banner ol li').removeClass('active');
+            $('.banner ol li').eq(index).addClass('active');
+        }
+        })
+    },
+    methods:mapActions(['ADD_ITEM'])
 }
 </script>
 <style scoped>
@@ -109,8 +107,6 @@ export default {
     .detail-content .title{font:.26rem/.6rem "";color:#808080;margin:0.2rem .5rem;width:6rem;}
     .detail-content .price{font:.26rem/.6rem "";color:#f00;margin:0.2rem .5rem}
     .detail-content .fright{display: flex;justify-content: space-around;font:.26rem/.6rem "";}
-
-
 
     /*底部*/
     footer{height:.97rem;border-top:.01rem solid #bfbfbf;position: fixed;left:0;right:0;bottom:0;background:#fff;display: flex;justify-content: space-around;}
